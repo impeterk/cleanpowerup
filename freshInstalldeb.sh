@@ -37,31 +37,6 @@ sudo apt update
 sudo apt upgrade -y
 #installs nala
 sudo apt install nala
-#switch apt for nala
-echo "apt() { 
-  command nala "$@"
-}
-sudo() {
-  if [ "$1" = "apt" ]; then
-    shift
-    command sudo nala "$@"
-  else
-    command sudo "$@"
-  fi
-}" >>~/.bashrc
-
-echo "apt() { 
-  command nala "$@"
-}
-sudo() {
-  if [ "$1" = "apt" ]; then
-    shift
-    command sudo nala "$@"
-  else
-    command sudo "$@"
-  fi
-}" | sudo tee -a /root/.bashrc
-source ~/.bashrc
 #adds brave-browser into repository
 sudo nala install curl -y
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
@@ -69,16 +44,14 @@ echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] http
 #installs aditional packages. Now with nala
 sudo nala update
 sudo nala install brave-browser flatpak neofetch golang nodejs npm gh timeshift -y
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo flatpak install flathub com.discordapp.Discord -y
+#flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo 
+#flatpak install flathub com.discordapp.Discord -y
 #installs latest neovim stable release
 curl -o ~/neovim.deb -L https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb
 sudo nala install ~/neovim.deb -y
 rm ~/neovim.deb
 #installs DENO => javascript runtime
 curl -fsSL https://deno.land/x/install/install.sh | sh
-echo "export PATH='$HOME/go/bin:$PATH'
-alias python='python3'" >>~/.bashrc
-source ~/.bashrc
 #installs lazygit
 go install github.com/jesseduffield/lazygit@latest
 #prompt to install AstroNvim
