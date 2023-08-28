@@ -1,21 +1,8 @@
 #!/usr/bin/env bash
-echo "Hello...Starting post install script"
+echo "Hello...Starting fresh install script"
 echo "
 -----------------------------------------------------------------------
-- HHHH     HHHH  EEEEEEEEEEEEEEEE 
-- HHHH     HHHH  EEEEEEEEEEEEEEEE
-- HHHH     HHHH  EEEEEEEEEEEEEEEE
-- HHHH     HHHH  EEEEEEEEEEEEEEEE
-- HHHH     HHHH  EEEE
-- HHHH     HHHH  EEEE
-- HHHHHHHHHHHHH  EEEEEEEEEEEE
-- HHHHHHHHHHHHH  EEEEEEEEEEEE
-- HHHHHHHHHHHHH  EEEE
-- HHHH     HHHH  EEEE
-- HHHH     HHHH  EEEEEEEEEEEEEEEE
-- HHHH     HHHH  EEEEEEEEEEEEEEEE
-- HHHH     HHHH  EEEEEEEEEEEEEEEE
-- HHHH     HHHH  EEEEEEEEEEEEEEEE
+This script will install basic software 
 -----------------------------------------------------------------------
 "
 while true; do
@@ -37,36 +24,33 @@ sudo apt update
 sudo apt upgrade -y
 #installs nala
 sudo apt install nala
-#adds brave-browser into repository
-sudo nala install curl -y
-sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
-#installs aditional packages. Now with nala
-sudo nala update
-sudo nala install brave-browser flatpak neofetch golang nodejs npm gh timeshift -y
-#flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo 
-#flatpak install flathub com.discordapp.Discord -y
-#installs latest neovim stable release
-curl -o ~/neovim.deb -L https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb
-sudo nala install ~/neovim.deb -y
-rm ~/neovim.deb
+sudo nala install curl flatpak neofetch golang nodejs npm gh timeshift -y
+
+################################################################################
+#     All aditional user software will be installed via Nix Package Manager    #
+################################################################################
+
+curl -L https://nixos.org/nix/install | sh
+
 #installs DENO => javascript runtime
-curl -fsSL https://deno.land/x/install/install.sh | sh
+#curl -fsSL https://deno.land/x/install/install.sh | sh
 #installs lazygit
-go install github.com/jesseduffield/lazygit@latest
+#go install github.com/jesseduffield/lazygit@latest
 #prompt to install AstroNvim
 while true; do
-  read -p "Would you like to install AstroNvim?" yn
-  case $yn in
-    [Yy]*)
-      echo "Installing AstroNvim"
-      git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
-      break;;
-    [Nn]*)
-      echo "abort..."
-      break;;
-    *) echo "Please enter y/n"
-  esac
+	read -p "Would you like to install AstroNvim?" yn
+	case $yn in
+	[Yy]*)
+		echo "Installing AstroNvim"
+		git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
+		break
+		;;
+	[Nn]*)
+		echo "abort..."
+		break
+		;;
+	*) echo "Please enter y/n" ;;
+	esac
 done
 #prompt user to install doomemacs
 while true; do
@@ -105,3 +89,4 @@ done
 echo "Finishing script..."
 source ~/.bashrc
 echo "Thank you for using our services."
+echo "after installing neovim from nix. Dont forget to run TSInstall astro"
